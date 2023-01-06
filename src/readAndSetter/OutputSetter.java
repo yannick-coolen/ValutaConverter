@@ -6,9 +6,16 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Biedt de mogelijke methodes om een bestand aan te maken,
+ * waarbij deze automatisch vraagt om een waarde dollar bedrag in te voer
+ * waarbij deze vervolgens wordt omgerekend in eurocenten.
+ */
 public class OutputSetter {
     /**
      *
@@ -16,45 +23,75 @@ public class OutputSetter {
      * @throws IOException
      */
     public static void setOutput(Path bronPath) throws IOException {
-//        System.out.println("Voer de bestemmingbestand in:");
-//        Scanner scanBestemmingBestand = new Scanner(System.in);
-//        String bestemmingInput = scanBestemmingBestand.nextLine(); // product
-//        Path bestemmingPath = Path.of("C:\\Users\\yanni\\IdeaProjects\\ValutaConverter\\" + bestemmingInput + ".txt");
+        try {
+            System.out.println("Voer de bestemmingsbestand in:");
+            Scanner scanBestemmingBestand = new Scanner(System.in);
+            String bestemmingInput = scanBestemmingBestand.nextLine(); // product
+            Path bestemmingPath = Path.of("C:\\Users\\yanni\\IdeaProjects\\ValutaConverter\\" + bestemmingInput + ".txt");
 
-        String[] arrOfString;
-        List<String> alleRegels = Files.readAllLines(bronPath);
+            if (!bestemmingInput.isEmpty()) {
+                List<String> alleRegels = Files.readAllLines(bronPath);
+                BufferedWriter out = Files.newBufferedWriter(bestemmingPath,
+                        StandardOpenOption.CREATE,
+                        StandardOpenOption.APPEND);
 
-        // TODO: 29/12/2022
-        // Set the converted amount in euro together with the index 0 of arrOfString
-        // in a created file, for which the name has been created after this was been
-        // entered by the user with the Scanner object
-        //
-        // If the name of the file already exist, DO NOT remove that file and find another way to solve this.
+                // method
+                ingevoerBedrag(bestemmingPath, out, alleRegels);
 
-//        if (!Files.exists(bestemmingPath && !Files.isRegularFile(bestemmingPath)) {
-//            System.out.println("Nieuw bestand " + input + ".txt is aangemaakt");
-//            BufferedWriter out = Files.newBufferedWriter(bestemmingPath);
-//            out.write("Test");
-//            out.close();
-//        } else {
-//            System.out.println("De ingevoerde naam voor bestand bestaat al");
-//        }
-
-        for (String regel: alleRegels) {
-            arrOfString = regel.split(": ");
-            double euro = Double.parseDouble(arrOfString[1]) * 91.8720;
-            BigDecimal bigDecimal = new BigDecimal(euro).setScale(2, RoundingMode.HALF_UP);
-
-            System.out.println(bigDecimal);
+                scanBestemmingBestand.close();
+                out.newLine();
+                out.close();
+            } else {
+                throw new InputMismatchException("Invoerveld voor bestemmingsbestand dient te worden ingevoerd!");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println(e.getMessage());
         }
-//         scanBestemmingBestand.close();
+    }
+
+    /**
+     *
+     * @param bestemmingPath
+     * @param out
+     * @param arrOfString
+     * @throws IOException
+     */
+    private static void setValutaText(Path bestemmingPath, BufferedWriter out, String[] arrOfString, double getValuta) throws IOException {
+        double euro = Double.parseDouble(arrOfString[1]) * (91.8720 * getValuta);
+        BigDecimal bigDecimal = new BigDecimal(euro).setScale(2, RoundingMode.HALF_UP);
+        if (Files.exists(bestemmingPath) && Files.isRegularFile(bestemmingPath)) {
+            out.write(arrOfString[0] + ": " + bigDecimal + " eurocent");
+        } else {
+            System.out.println(arrOfString[0] + ": " + bigDecimal + " eurocent");
+            out.write(arrOfString[0] + ": " + bigDecimal + " eurocent");
+        }
+        out.newLine();
+    }
+
+
+    private static void ingevoerBedrag(Path bestemmingPath, BufferedWriter out, List<String> alleRegels) throws IOException {
+        try {
+            System.out.println("Voer een dollarbedrag in waarbij het patroon van (getal.getal) aangehouden wordt," +
+                    " om het in eurocenten om te rekenen." +
+                    "\n\nLET OP: comma's voor decimale zijn niet toegestaan:");
+            Scanner scanValuta = new Scanner(System.in);
+            String valutaInput = scanValuta.nextLine();
+            double getValuta = Double.parseDouble(valutaInput);
+
+            if (!Double.isNaN(getValuta)) {
+                if (getValuta == 0.0) {
+                    getValuta = 1;
+                }
+                for (String regel : alleRegels) {
+                    String[] arrOfString = regel.split(": ");
+                    // method
+                    setValutaText(bestemmingPath, out, arrOfString, getValuta);
+                }
+            }
+        }
+        catch (IllegalArgumentException e) {
+            System.out.println("Invoer dienen te worden ingevoerd en moet van getallen worden voorzien," +
+                    "\nwaarvan de punt decimalen optioneel zijn");
+        }
     }
 }
-
-
-//        InputStream inputStream = new InputStream(Path.of("C:\\Users\\yanni\\IdeaProjects\\ValutaConverter\\" + input + ".txt")) {
-//            @Override
-//            public int read() throws IOException {
-//                return 0;
-//            }
-//        }
