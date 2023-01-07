@@ -7,15 +7,17 @@ import java.util.Scanner;
 
 import static readAndSetter.InvoerBestemming.setBestemmingBestand;
 
-public class InputSource {
+public class InvoerBron {
     /**
-     * Biedt de mogelijkheid om een bestaand bestand te openen
-     * als de invoer van de gebruiker gelijk is met het bestaand bestand
-     * @throws IOException Als de invoer niet gelijk is met het bestaand bestand
-     * treed er een Exception waarbij deze een bericht terug geeft dat het bestand
-     * niet bestaat, en voert vervolgens het programma niet uit.
+     * Biedt de gebruiker de mogelijkheid om een invoer binnen de terminal
+     * toe te passen, waardoor het programma zoekt naar de naam van een bestaand
+     * bestand die overeenkomt met de invoerwaarde
+     * <br/><br/>
+     * Bij het invoeren van een waarde dat niet overeenkomt met de naam van
+     * een bestaand bestand wordt er een IOException uitgevoerd, waarbij deze
+     * voorziet met een foutbericht.
      */
-    public static void readIn() {
+    public static void invoerBronBestand() {
         System.out.println("Voer de naam van het bronbestand in die je wilt openen:");
         Scanner scanBronBestand = new Scanner(System.in);
         String inputBronBestand = scanBronBestand.nextLine(); // product
@@ -27,7 +29,7 @@ public class InputSource {
                 System.out.println(alleTekst);
                 System.out.println();
 
-                // class OutputSetter
+                // static method from class InvoerBestemming
                 setBestemmingBestand(bronPath);
             }
             scanBronBestand.close();

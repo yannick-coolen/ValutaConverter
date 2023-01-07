@@ -12,6 +12,13 @@ import java.util.Scanner;
 import static readAndSetter.UitvoerValuta.ingevoerBedrag;
 
 public class InvoerBestemming {
+    /**
+     * Biedt de gebruiker de mogelijkheid om een bestand aan te maken waarbij de invoerwaarde de naam wordt.
+     * @param bronPath Doorgespeelde data vanuit de Class Invoerbron, met als doel de inhoud over te nemen
+     *                 waarbij deze verwerking daarvan in een nieuw bestand komen te staan.
+     * @throws IOException Wanneer het invoerveld binnen de terminal leeg staat treed er een IOException op
+     * waarbij deze een foutmelding teruggeeft.
+     */
     public static void setBestemmingBestand(Path bronPath) throws IOException {
         try {
             System.out.println("Voer de bestemmingsbestand in:");
@@ -25,7 +32,7 @@ public class InvoerBestemming {
                         StandardOpenOption.CREATE,
                         StandardOpenOption.APPEND);
 
-                // method
+                // static method afkomstig van Class UitvoerValuta
                 ingevoerBedrag(bestemmingPath, out, alleRegels);
 
                 scanBestemmingBestand.close();
