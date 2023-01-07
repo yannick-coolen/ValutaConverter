@@ -1,6 +1,4 @@
-import java.io.IOException;
-
-import readAndSetter.InputReader;
+import readAndSetter.InputSource;
 
 public class Main {
     /**
@@ -10,10 +8,6 @@ public class Main {
      */
     public static void main(String[] args) {
         // Initiatiepunt
-        try {
-            InputReader.readIn();
-        } catch (IOException e) {
-            System.out.printf(e.getMessage());
-        }
+        InputSource.readIn();
     }
 }
