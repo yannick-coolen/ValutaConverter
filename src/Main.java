@@ -1,13 +1,13 @@
-import readAndSetter.InputSource;
+import readAndSetter.InvoerBron;
 
 public class Main {
     /**
-     * Initïeer de applicatie door de klasse InputReader aan te roepen,
-     * dat de methode readIn() uitvoert
+     * Initïeer de applicatie door binnen de klasse InvoerBron
+     * de methode invoerBronBestand aan te roepen.
      * @param args
      */
     public static void main(String[] args) {
         // Initiatiepunt
-        InputSource.readIn();
+        InvoerBron.invoerBronBestand();
     }
 }
