@@ -9,7 +9,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import static readAndSetter.UitvoerValuta.ingevoerBedrag;
+import static readAndSetter.UitvoerValuta.invoerBedrag;
 
 public class InvoerBestemming {
     /**
@@ -33,7 +33,7 @@ public class InvoerBestemming {
                         StandardOpenOption.APPEND);
 
                 // static method afkomstig van Class UitvoerValuta
-                ingevoerBedrag(bestemmingPath, out, alleRegels);
+                invoerBedrag(bestemmingPath, out, alleRegels);
 
                 scanBestemmingBestand.close();
                 out.newLine();

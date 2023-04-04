@@ -22,7 +22,7 @@ public class UitvoerValuta {
      * @param alleRegels
      * @throws IOException
      */
-    public static void ingevoerBedrag(Path bestemmingPath, BufferedWriter out, List<String> alleRegels) throws IOException {
+    public static void invoerBedrag(Path bestemmingPath, BufferedWriter out, List<String> alleRegels) throws IOException {
         try {
             System.out.println("Voer een dollarbedrag in waarbij het patroon van (getal.getal) aangehouden wordt," +
                     " om het in eurocenten om te rekenen." +
@@ -35,9 +35,11 @@ public class UitvoerValuta {
                 if (getValuta == 0.0) {
                     getValuta = 1;
                 }
+
                 for (String regel : alleRegels) {
                     String[] arrOfString = regel.split(": ");
-                    // method
+
+                    // static method
                     setValutaInText(bestemmingPath, out, arrOfString, getValuta);
                 }
             }
@@ -58,7 +60,9 @@ public class UitvoerValuta {
      */
     private static void setValutaInText(Path bestemmingPath, BufferedWriter out, String[] arrOfString, double getValuta) throws IOException {
         double euro = Double.parseDouble(arrOfString[1]) * (91.8720 * getValuta);
+        // Creëer de mogelijkheid waardoor er altijd twee decimalen bij een bedrag komen te staan.
         BigDecimal bigDecimal = new BigDecimal(euro).setScale(2, RoundingMode.HALF_UP);
+
         if (Files.exists(bestemmingPath) && Files.isRegularFile(bestemmingPath)) {
             out.write(arrOfString[0] + ": " + bigDecimal + " eurocent");
         } else {
@@ -67,7 +71,4 @@ public class UitvoerValuta {
         }
         out.newLine();
     }
-
-
-
 }
