@@ -7,10 +7,6 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class InputReader {
-    /**
-     *
-     * @throws IOException
-     */
     public static void readIn() throws IOException {
         System.out.println("Voer de naam van het bronbestand in die je wilt openen:");
         Scanner scanBronBestand = new Scanner(System.in);
@@ -23,7 +19,6 @@ public class InputReader {
             if (Files.exists(bronPath) && Files.isRegularFile(bronPath)) {
                 System.out.println(alleTekst);
                 System.out.println();
-                // class OutputSetter
                 OutputSetter.setOutput(bronPath);
             } else {
                 throw new IOException(bronPath.getFileName().toString());
